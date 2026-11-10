@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101629">
+  <meta name="description" content="Explore o 5G em um pôster interativo. Conheça uma aplicação real de IoT, controle sensores de uma fábrica e acompanhe o caminho dos dados.">
+  <title>Frequência 05 • Do sinal à ação</title>
+  <style>
+:root {
+  color-scheme: dark;
+  --page: #070b16;
+  --paper: #101629;
+  --panel: #18213a;
+  --line: #2c3857;
+  --muted: #acb9d7;
+  --ink: #f1f5ff;
+  --accent: #77ebff;
+  --violet: #c0afff;
+  --orange: #ffbf9c;
+  --mono: "Cascadia Code", "Consolas", monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 82px; }
+body { margin: 0; background: var(--page); color: var(--ink); font-family: "Segoe UI", system-ui, sans-serif; font-size: 16px; line-height: 1.6; }
+button, input, select { font: inherit; }
+button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+a { color: inherit; text-underline-offset: 4px; }
+button { color: inherit; }
+button:disabled { cursor: wait; opacity: .65; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 5px; }
+[hidden] { display: none !important; }
+h1, h2, h3, p, figure { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+h2 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 650; line-height: 1.12; letter-spacing: -.045em; }
+h3 { font-size: 24px; line-height: 1.25; letter-spacing: -.035em; font-weight: 600; }
+p { color: #bfcbe4; }
+strong, b { font-weight: 600; color: var(--ink); }
+svg { display: block; }
+.icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.symbol-sheet { position: absolute; width: 0; height: 0; overflow: hidden; }
+.poster { max-width: 1040px; margin: 30px auto; background: var(--paper); border: 1px solid var(--line); }
+.eyebrow { font: 500 11px/1.6 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.skip-link { position: fixed; top: -100px; left: 12px; z-index: 100; background: var(--accent); color: var(--page); padding: 10px; }
+.skip-link:focus { top: 12px; }
+.reading-progress { position: fixed; top: 0; height: 3px; width: 100%; z-index: 100; pointer-events: none; }
+.reading-progress span { display: block; width: 100%; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+.masthead { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 0 48px; padding: 26px 0; }
+.wordmark { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; letter-spacing: .13em; text-decoration: none; }
+.brand-number { color: var(--accent); font: 500 14px var(--mono); border: 1px solid var(--line); padding: 4px 5px; }
+.brand-mark { display: flex; gap: 3px; align-items: end; width: 24px; height: 24px; transform: skew(-12deg); }
+.brand-mark i { display: block; background: var(--accent); height: 10px; width: 5px; }
+.brand-mark i:nth-child(2) { height: 17px; }
+.brand-mark i:nth-child(3) { height: 24px; }
+.edition { text-align: right; font: 10px/1.8 var(--mono); letter-spacing: .1em; }
+.edition span { color: var(--muted); }
+.section-nav { display: flex; position: sticky; top: 0; z-index: 30; padding: 0 48px; background: #101629eb; backdrop-filter: blur(16px); border-block: 1px solid var(--line); }
+.section-nav > a { font-size: 12px; text-decoration: none; padding: 16px 20px 16px 0; margin-right: 16px; border-bottom: 2px solid transparent; white-space: nowrap; color: var(--muted); }
+.section-nav > a span { font: 10px var(--mono); margin-right: 5px; color: #8796bf; }
+.section-nav > a:hover, .section-nav > a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.motion-toggle { margin-left: auto; background: transparent; border: none; display: flex; align-items: center; gap: 7px; font-size: 11px; padding: 8px 0; color: var(--muted); }
+.motion-toggle:hover { color: var(--ink); }
+.motion-toggle > span:first-child { color: var(--accent); width: 20px; font-size: 18px; }
+.hero { position: relative; display: grid; grid-template-columns: 1.02fr 1fr; column-gap: 8px; padding: 52px 48px 0; overflow: hidden; }
+.hero-copy { z-index: 1; }
+.status-dot { width: 6px; height: 6px; display: inline-block; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px #77ebff45; margin-right: 8px; vertical-align: middle; }
+h1 { font-size: clamp(52px, 7.8vw, 80px); line-height: .99; letter-spacing: -.065em; font-weight: 650; margin: 22px 0; }
+h1 em { font-weight: inherit; color: var(--accent); font-style: normal; }
+.hero-copy > p { max-width: 365px; font-size: 15px; line-height: 1.75; margin-bottom: 28px; }
+.primary-button { display: inline-flex; align-items: center; justify-content: center; gap: 18px; padding: 13px 20px; font-weight: 650; font-size: 14px; border: 1px solid var(--accent); border-radius: 3px; background: var(--accent); color: #101735; text-decoration: none; min-height: 48px; transition: background .15s, transform .15s; }
+.primary-button:hover:not(:disabled) { background: #a4f4ff; transform: translateY(-2px); }
+.primary-button .icon { width: 20px; height: 20px; }
+.hero-art { position: relative; min-height: 380px; display: grid; place-items: center; }
+.hero-art::before { content: ""; position: absolute; inset: -20px -30px 0; opacity: .35; background-image: linear-gradient(#6da8ff2e 1px, transparent 1px), linear-gradient(90deg, #6da8ff2e 1px, transparent 1px); background-size: 30px 30px; mask-image: radial-gradient(ellipse, black, transparent 70%); }
+.fiveg { position: relative; font: 800 clamp(150px, 22vw, 238px)/1 Arial, sans-serif; letter-spacing: -.1em; color: var(--accent); padding-right: 20px; transform: translateY(-8px); text-shadow: 0 0 80px #7285ff23; }
+.fiveg span { -webkit-text-stroke: 2px var(--accent); color: var(--paper); }
+.orbit { position: absolute; border: 1px solid #668fe777; border-radius: 50%; width: 330px; height: 330px; transform: rotate(-24deg) scaleY(.82); }
+.orbit-two { width: 400px; height: 400px; opacity: .5; }
+.orbit-three { width: 260px; height: 260px; border-style: dashed; opacity: .7; }
+.orbit-label { position: absolute; top: 9px; left: 27px; font: 9px var(--mono); letter-spacing: .15em; color: var(--muted); }
+.signal-node { position: absolute; width: 46px; height: 46px; display: grid; place-items: center; background: var(--paper); border: 1px solid var(--accent); border-radius: 8px; box-shadow: 0 0 25px #77ebff15; color: var(--accent); }
+.node-one { top: 37px; right: 43px; transform: rotate(12deg); }
+.node-two { bottom: 67px; left: 22px; transform: rotate(-12deg); }
+.cross { position: absolute; font: 24px var(--mono); color: #7c8cb5; }
+.cross-one { left: 7px; top: 30px; }
+.cross-two { right: 9px; bottom: 45px; }
+.hero-signal { position: absolute; bottom: 34px; left: 35%; display: flex; gap: 5px; height: 28px; align-items: center; }
+.hero-signal span { height: 50%; width: 3px; background: var(--accent); animation: signal 1.6s ease-in-out infinite alternate; }
+.hero-signal span:nth-child(3n) { height: 100%; animation-delay: -.6s; }
+.hero-signal span:nth-child(3n + 1) { height: 30%; animation-delay: -.3s; }
+.signal-caption { position: absolute; bottom: 0; font: 9px var(--mono); letter-spacing: .1em; color: var(--muted); }
+.hero-bottom { grid-column: 1/-1; display: flex; justify-content: space-between; padding: 30px 0 26px; margin-top: 36px; border-bottom: 1px solid var(--line); color: var(--muted); font: 9px var(--mono); letter-spacing: .1em; }
+.content-section { margin: 0 48px; padding: 52px 0; border-bottom: 1px solid var(--line); }
+.section-heading { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px; }
+.section-number { color: var(--accent); background: #77ebff0a; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #476895; border-radius: 50%; font: 16px var(--mono); flex-shrink: 0; margin-top: 5px; }
+.section-heading .eyebrow { margin-bottom: 10px; }
+.section-intro { max-width: 720px; font-size: 15px; line-height: 1.8; margin-bottom: 28px; }
+.tab-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+.capability-tab { display: flex; gap: 13px; align-items: center; text-align: left; padding: 20px 15px; border: 1px solid var(--line); background: transparent; border-radius: 3px; transition: background .15s, border-color .15s; }
+.capability-tab > .icon { color: var(--muted); width: 28px; height: 28px; }
+.capability-tab b { font-size: 14px; display: block; white-space: nowrap; }
+.capability-tab small { display: block; font: 10px var(--mono); color: var(--muted); margin-top: 5px; }
+.tab-arrow { margin-left: auto; font-size: 18px; color: var(--muted); }
+.capability-tab:hover { background: #77ebff08; }
+.capability-tab.selected { border-color: var(--accent); background: #77ebff0a; }
+.capability-tab.selected .icon, .capability-tab.selected .tab-arrow { color: var(--accent); }
+.capability-panel { display: grid; grid-template-columns: .75fr 1fr; gap: 32px; padding: 30px; border: 1px solid var(--line); background: var(--panel); min-height: 245px; border-radius: 3px; align-items: center; }
+.capability-art svg { width: 100%; height: auto; max-height: 175px; }
+.capability-copy h3 { margin: 10px 0; font-size: 25px; }
+.capability-copy p { font-size: 14px; line-height: 1.75; }
+.capability-copy .eyebrow { font-size: 9px; }
+.example-chip { color: var(--violet); font: 11px/1.6 var(--mono); margin-top: 14px; }
+.packet-lines { stroke-dasharray: 12 9; animation: packet 3s linear infinite; }
+.fine-print { font: 11px/1.8 var(--mono); color: var(--muted); margin-top: 16px; }
+.case-strip { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px; font-size: 14px; }
+.case-badge { font: 10px var(--mono); color: var(--accent); border: 1px solid #405980; background: #77ebff08; padding: 7px 10px; }
+.source-marker { color: var(--accent); font: 11px var(--mono); text-decoration: none; }
+.factory-figure { background: #0b1224; border: 1px solid var(--line); border-radius: 3px; }
+.factory-figure figcaption { display: flex; gap: 15px; justify-content: space-between; padding: 18px 22px; font-size: 11px; color: var(--muted); border-bottom: 1px solid #253859; }
+.factory-figure figcaption b { padding-left: 8px; color: var(--accent); }
+.factory-map { position: relative; width: 100%; margin-top: 12px; }
+.factory-drawing { width: 100%; height: auto; }
+.hotspot { position: absolute; display: flex; align-items: center; gap: 6px; background: #10182de8; border: 1px solid #5675ab; border-radius: 30px; padding: 4px 12px 4px 4px; color: var(--ink); font: 11px var(--mono); transform: translate(-50%, -50%); min-height: 44px; box-shadow: 0 4px 14px #0008; }
+.hotspot b { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #283961; color: var(--accent); font: 12px var(--mono); }
+.hotspot:hover, .hotspot.selected { border-color: var(--accent); }
+.hotspot.selected b { background: var(--accent); color: #101735; }
+.hot-sensor { left: 23%; top: 42%; }
+.hot-radio { left: 58%; top: 20%; }
+.hot-edge { left: 78%; top: 42%; }
+.hot-panel { left: 57%; top: 83%; }
+.data-route { animation: packet 3s linear infinite; }
+.radio-waves { animation: radiate 2s ease-in-out infinite alternate; }
+.hotspot-info { display: flex; gap: 18px; align-items: flex-start; padding: 22px; background: #19243e; border-top: 1px solid var(--line); min-height: 132px; }
+.hotspot-info > span { font: 32px/1.2 var(--mono); color: var(--accent); opacity: .8; }
+.hotspot-info h3 { font-size: 20px; margin-bottom: 8px; }
+.hotspot-info p { font-size: 14px; max-width: 680px; }
+.lab { border: 1px solid #4c6795; background: #0e1528; border-radius: 4px; overflow: hidden; }
+.lab-header { padding: 18px 24px; border-bottom: 1px solid var(--line); background: #1a2642; display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: 12px; }
+.lab-header strong { font: 12px var(--mono); }
+.lab-subtitle { padding-left: 12px; font-size: 11px; color: var(--muted); }
+.demo-label { font: 9px var(--mono); padding: 5px 7px; color: var(--accent); background: #77ebff0a; border: 1px solid #405d8a; }
+.lab-controls { display: grid; grid-template-columns: 1fr 1fr; }
+#sensor-controls { border: none; min-width: 0; margin: 0; padding: 26px; border-right: 1px solid var(--line); }
+#sensor-controls legend { float: left; width: 100%; margin-bottom: 22px; }
+.sensor-control { clear: both; margin-bottom: 24px; }
+.control-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+.control-heading label { font-size: 14px; }
+.control-heading output { font: 30px var(--mono); color: var(--accent); letter-spacing: -.05em; }
+.control-heading output small { font: 11px var(--mono); color: var(--muted); }
+input[type="range"] { --fill: 25%; width: 100%; height: 24px; appearance: none; margin: 0; background: transparent; cursor: pointer; touch-action: pan-y; }
+input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 5px; background: linear-gradient(90deg, var(--accent) var(--fill), #33476d var(--fill)); }
+input[type="range"]::-moz-range-track { height: 4px; background: #33476d; }
+input[type="range"]::-moz-range-progress { height: 4px; background: var(--accent); }
+input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); border: 3px solid #162647; outline: 1px solid var(--accent); margin-top: -7px; }
+input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid #162647; }
+.range-labels { display: flex; justify-content: space-between; gap: 6px; color: var(--muted); font: 9px/1.6 var(--mono); }
+.preset-actions { display: flex; flex-wrap: wrap; gap: 7px 16px; }
+.text-button { background: transparent; color: var(--muted); border: none; padding: 8px 0; font-size: 12px; min-height: 40px; text-underline-offset: 4px; }
+.text-button:hover:not(:disabled) { color: var(--accent); text-decoration: underline; }
+.sensor-monitor { padding: 26px; }
+.monitor-heading { display: flex; justify-content: space-between; gap: 5px; align-items: center; }
+.monitor-heading .eyebrow { font-size: 9px; }
+.preview-state { font: 9px var(--mono); color: var(--accent); }
+.preview-state.alert { color: var(--orange); }
+#wave-chart { width: 100%; height: 124px; margin: 12px 0 0; }
+.sensor-monitor > p { font: 9px var(--mono); color: var(--muted); margin-bottom: 20px; }
+.route-control label { display: block; margin-bottom: 9px; }
+.route-control select { width: 100%; background: #1a2440; color: var(--ink); border: 1px solid #52638b; padding: 10px 12px; font-size: 12px; border-radius: 3px; cursor: pointer; }
+.route-control p { font-size: 11px; line-height: 1.6; margin-top: 10px; min-height: 36px; }
+.lab-action { display: flex; align-items: center; gap: 20px; border-top: 1px solid var(--line); padding: 18px 26px; }
+.lab-action > span { color: var(--muted); font: 10px var(--mono); margin-left: auto; text-align: right; }
+.transmission { padding: 26px; border-top: 1px solid var(--line); background: #131c34; }
+.transmission-caption { display: flex; justify-content: space-between; gap: 10px; }
+.transmission-caption > span:last-child { font: 9px/1.6 var(--mono); color: var(--muted); }
+.pipeline { position: relative; list-style: none; padding: 0; margin: 22px 0 26px; display: grid; grid-template-columns: repeat(4, 1fr); }
+.pipeline::before { content: ""; position: absolute; left: 12.5%; right: 12.5%; height: 1px; top: 17px; background: var(--line); }
+.pipeline li { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; gap: 3px; font-size: 12px; }
+.stage-dot { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #536b97; background: #131c34; color: var(--muted); font: 12px var(--mono); margin-bottom: 7px; transition: background .2s, color .2s; }
+.pipeline li small { color: var(--muted); font-size: 10px; }
+.pipeline li.active .stage-dot { background: var(--accent); border-color: var(--accent); color: #101735; box-shadow: 0 0 0 5px #77ebff12; }
+.pipeline li.complete .stage-dot { border-color: var(--accent); color: var(--accent); }
+.result-panel { padding: 22px; border: 1px solid #3c567a; background: #172a43; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; min-height: 160px; border-radius: 3px; }
+.result-panel h3 { margin: 7px 0; font-size: 23px; }
+.result-panel p { font-size: 12px; line-height: 1.7; max-width: 490px; }
+.result-panel.alert { border-color: #b9767b; background: #33233a; }
+.result-panel.alert .eyebrow, .result-panel.alert .latency strong { color: var(--orange); }
+.latency { padding-left: 20px; border-left: 1px solid #41557c; min-width: 115px; }
+.latency strong { font: 38px var(--mono); letter-spacing: -.08em; color: var(--accent); white-space: nowrap; }
+.latency strong small { font: 12px var(--mono); letter-spacing: 0; margin-left: 3px; }
+.latency > span { display: block; font: 8px/1.7 var(--mono); letter-spacing: .1em; color: var(--muted); margin-top: 8px; }
+.model-details { font-size: 12px; color: var(--muted); margin-top: 18px; }
+.model-details summary { cursor: pointer; padding: 8px 0; color: var(--muted); }
+.model-details p { padding: 10px 0 0; max-width: 760px; line-height: 1.8; }
+.takeaway { display: flex; align-items: center; gap: 18px; margin-top: 23px; }
+.takeaway .icon { color: var(--violet); width: 32px; height: 32px; }
+.takeaway p { font-size: 13px; }
+.takeaway strong { color: var(--violet); }
+.quiz-section { border-bottom: none; }
+.quiz-card { background: #1c1e39; border: 1px solid #49456e; padding: 30px; border-radius: 3px; }
+.quiz-topline { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+.quiz-topline .eyebrow { color: var(--violet); }
+.quiz-progress { display: flex; align-items: center; gap: 5px; }
+.quiz-progress i { height: 3px; width: 22px; background: #3b4062; }
+.quiz-progress i.current { background: var(--violet); }
+.quiz-card h3 { max-width: 670px; font-size: 25px; margin-bottom: 22px; }
+.quiz-options { display: grid; gap: 9px; }
+.quiz-option { display: flex; align-items: center; gap: 15px; width: 100%; background: #10182d; border: 1px solid #343a5f; text-align: left; padding: 13px 16px; min-height: 57px; border-radius: 3px; font-size: 14px; }
+.quiz-option > span:first-child { display: grid; place-items: center; width: 28px; height: 28px; flex-shrink: 0; border: 1px solid #59658a; color: var(--muted); font: 11px var(--mono); }
+.quiz-option:hover:not(:disabled) { border-color: var(--violet); }
+.quiz-option:disabled { opacity: 1; cursor: default; }
+.quiz-option.correct { border-color: var(--accent); background: #77ebff0b; }
+.quiz-option.correct > span:first-child { color: #0a1428; border-color: var(--accent); background: var(--accent); }
+.quiz-option.wrong { border-color: var(--orange); background: #ffbf9c14; }
+.answer-indicator { margin-left: auto; font: 10px var(--mono); color: var(--accent); white-space: nowrap; }
+.wrong .answer-indicator { color: var(--orange); }
+.quiz-feedback { padding: 0; margin-top: 16px; font-size: 13px; max-width: 700px; }
+.quiz-feedback:empty { display: none; }
+.quiz-card .primary-button { margin-top: 20px; background: var(--violet); border-color: var(--violet); }
+.quiz-card .primary-button:hover { background: #e0d5ff; }
+.quiz-score { font: 78px/1 var(--mono); letter-spacing: -.08em; color: var(--violet); padding: 8px 0; }
+.quiz-score span { font-size: 26px; letter-spacing: 0; color: var(--muted); }
+footer { background: #77ebff; color: #101735; padding: 36px 48px 26px; }
+.footer-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 25px; }
+.footer-top .eyebrow { color: #273753; margin-bottom: 9px; }
+.footer-top h2 { font-size: 34px; }
+.back-top { font: 11px var(--mono); white-space: nowrap; }
+.source-list { list-style: none; padding: 0; margin: 0; }
+.source-list li { display: flex; gap: 20px; align-items: center; padding: 15px 0; border-top: 1px solid #6174a050; }
+.source-list li > span { font: 11px var(--mono); color: #36506c; }
+.source-list a { position: relative; display: flex; width: 100%; align-items: baseline; gap: 15px; padding-right: 25px; text-decoration: none; }
+.source-list a:hover b { text-decoration: underline; }
+.source-list b { color: #101735; font-size: 13px; }
+.source-list small { font-size: 11px; color: #354463; }
+.source-list a > span { position: absolute; right: 0; }
+.footer-bottom { display: flex; justify-content: space-between; gap: 15px; padding-top: 25px; border-top: 1px solid #6174a050; font: 9px/1.8 var(--mono); letter-spacing: .04em; }
+.footer-bottom .muted { color: #324564; }
+.noscript { max-width: 950px; margin: 20px auto; padding: 20px; color: var(--orange); }
+@keyframes signal { to { transform: scaleY(.35); opacity: .5; } }
+@keyframes packet { to { stroke-dashoffset: -42; } }
+@keyframes radiate { to { opacity: .3; } }
+.motion-paused *, .motion-paused *::before, .motion-paused *::after { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 800px) {
+  .poster { margin: 0; border-inline: none; }
+  .masthead { margin-inline: 28px; }
+  .section-nav { padding-inline: 28px; }
+  .section-nav > a { margin-right: 8px; padding-right: 12px; }
+  .motion-label { display: none; }
+  .hero { padding: 38px 28px 0; }
+  .hero-art { min-height: 340px; }
+  .fiveg { font-size: 200px; }
+  .orbit { width: 280px; height: 280px; }
+  .orbit-two { width: 340px; height: 340px; }
+  .orbit-three { width: 220px; height: 220px; }
+  .signal-caption { font-size: 8px; }
+  .orbit-label { font-size: 8px; left: 20px; top: 20px; }
+  .node-one { right: 15px; }
+  .content-section { margin-inline: 28px; }
+  .capability-tab { padding: 15px 10px; gap: 9px; }
+  .capability-tab > .icon { width: 24px; }
+  .capability-tab b { font-size: 12px; }
+  .capability-panel { gap: 22px; padding: 25px; }
+  .tab-arrow { display: none; }
+  .monitor-heading { align-items: flex-start; flex-direction: column; }
+  .lab-subtitle { display: none; }
+  #sensor-controls, .sensor-monitor, .transmission { padding: 20px; }
+  footer { padding-inline: 28px; }
+  .source-list a { flex-direction: column; gap: 2px; }
+}
+@media (max-width: 560px) {
+  html { scroll-padding-top: 72px; }
+  .masthead { margin-inline: 20px; padding: 21px 0; }
+  .wordmark { font-size: 12px; gap: 8px; letter-spacing: .1em; }
+  .brand-number { font-size: 12px; }
+  .brand-mark { width: 20px; height: 20px; }
+  .brand-mark i { width: 4px; }
+  .edition { font-size: 8px; letter-spacing: .03em; }
+  .edition span { display: none; }
+  .section-nav { padding-inline: 16px; gap: 0; }
+  .section-nav > a { flex: 1; text-align: center; font-size: 10px; padding: 14px 6px; margin: 0; }
+  .section-nav > a span { display: none; }
+  .motion-toggle { width: 28px; min-width: 28px; justify-content: center; padding-left: 6px; }
+  .hero { padding: 32px 20px 0; grid-template-columns: 1fr; }
+  h1 { font-size: 66px; margin: 20px 0 16px; }
+  .hero-copy > p { max-width: 400px; font-size: 14px; margin-bottom: 22px; }
+  .hero-art { min-height: 300px; max-width: 380px; width: 100%; margin: 16px auto 0; }
+  .fiveg { font-size: 204px; }
+  .orbit { height: 255px; width: 285px; }
+  .orbit-two { height: 305px; width: 340px; }
+  .orbit-three { height: 200px; width: 220px; }
+  .orbit-label { top: 12px; left: 20px; }
+  .node-one { top: 20px; right: 30px; }
+  .node-two { left: 20px; bottom: 60px; }
+  .signal-node { width: 38px; height: 38px; }
+  .hero-signal { bottom: 26px; }
+  .hero-bottom { font-size: 8px; gap: 12px; margin-top: 20px; padding: 20px 0; }
+  .hero-bottom span:last-child { text-align: right; }
+  .content-section { margin: 0 20px; padding: 36px 0; }
+  .section-heading { gap: 13px; margin-bottom: 20px; }
+  .section-number { width: 33px; height: 33px; font-size: 12px; }
+  .section-heading .eyebrow { font-size: 9px; }
+  .section-intro { font-size: 14px; margin-bottom: 22px; }
+  .tab-list { gap: 6px; }
+  .capability-tab { flex-direction: column; align-items: flex-start; gap: 10px; padding: 12px 9px; }
+  .capability-tab b { font-size: 11px; white-space: normal; min-height: 18px; }
+  .capability-tab small { font-size: 9px; }
+  .capability-panel { grid-template-columns: 1fr; padding: 22px; gap: 17px; }
+  .capability-art svg { height: 125px; }
+  .capability-copy h3 { font-size: 23px; }
+  .capability-copy p { font-size: 13px; }
+  .fine-print { font-size: 10px; }
+  .case-strip { gap: 9px; font-size: 12px; }
+  .case-badge { font-size: 8px; }
+  .factory-figure figcaption { padding: 14px; flex-direction: column; gap: 3px; }
+  .factory-map { margin-top: 26px; margin-bottom: 15px; }
+  .hotspot { padding: 2px; gap: 0; min-width: 38px; min-height: 38px; justify-content: center; }
+  .hotspot span { position: absolute; bottom: -17px; font-size: 8px; white-space: nowrap; color: var(--accent); background: #10182de8; padding: 0 3px; }
+  .hotspot b { width: 28px; height: 28px; }
+  .hot-sensor { top: 34%; left: 21%; }
+  .hot-radio { top: 7%; }
+  .hot-edge { top: 31%; left: 81%; }
+  .hot-panel { top: 80%; }
+  .hotspot-info { padding: 18px 14px; gap: 12px; min-height: 175px; }
+  .hotspot-info > span { font-size: 24px; }
+  .hotspot-info h3 { font-size: 18px; }
+  .hotspot-info p { font-size: 13px; }
+  .lab-header { padding: 15px; }
+  .lab-header strong { font-size: 11px; }
+  .demo-label { font-size: 7px; }
+  .lab-controls { grid-template-columns: 1fr; }
+  #sensor-controls { padding: 20px; border-right: none; border-bottom: 1px solid var(--line); }
+  .sensor-monitor { padding: 20px; }
+  .monitor-heading { flex-direction: row; align-items: center; }
+  #wave-chart { height: 110px; }
+  .sensor-monitor > p { margin-bottom: 18px; }
+  .route-control p { min-height: 0; }
+  .lab-action { padding: 16px 18px; gap: 12px; flex-wrap: wrap; }
+  .lab-action .primary-button { padding: 12px 15px; font-size: 12px; }
+  .lab-action > span { flex-basis: 100%; margin-left: 0; text-align: left; font-size: 9px; }
+  .transmission { padding: 20px 16px; }
+  .transmission-caption { flex-direction: column; gap: 5px; }
+  .transmission-caption .eyebrow { font-size: 10px; }
+  .pipeline li { font-size: 11px; }
+  .pipeline li small { font-size: 9px; }
+  .result-panel { padding: 17px; gap: 16px; grid-template-columns: 1fr; }
+  .result-panel h3 { font-size: 23px; }
+  .latency { display: flex; align-items: center; gap: 15px; padding: 12px 0 0; border-left: none; border-top: 1px solid #41557c; }
+  .latency > span { margin: 0; }
+  .latency strong { font-size: 30px; }
+  .takeaway { gap: 12px; }
+  .takeaway p { font-size: 12px; }
+  .quiz-card { padding: 20px; }
+  .quiz-card h3 { font-size: 23px; }
+  .quiz-option { font-size: 12px; padding: 12px 10px; gap: 10px; flex-wrap: wrap; }
+  .quiz-option > span:nth-child(2) { flex: 1; min-width: 130px; }
+  .answer-indicator { font-size: 9px; padding-left: 38px; margin-left: 0; }
+  footer { padding: 30px 20px 22px; }
+  .footer-top { align-items: flex-start; }
+  .footer-top h2 { font-size: 28px; }
+  .back-top { font-size: 9px; margin-top: 8px; }
+  .source-list { margin-top: 30px; }
+  .source-list li { gap: 14px; }
+  .source-list b { font-size: 12px; }
+  .source-list small { font-size: 10px; }
+  .footer-bottom { flex-direction: column; gap: 5px; font-size: 8px; }
+}
+
+/* Camada visual do pôster: superfícies, contraste e hierarquia. */
+:root {
+  --spectrum: linear-gradient(115deg, #85f4ff 0%, #91c7ff 46%, #c8afff 100%);
+  --glass: linear-gradient(145deg, #202b48, #151d34 72%);
+  --radius: 16px;
+}
+body {
+  background: radial-gradient(ellipse at top, #171b37 0%, var(--page) 700px);
+}
+.poster {
+  border-radius: 24px;
+  box-shadow: 0 30px 80px #02061480;
+}
+.reading-progress span { background: var(--spectrum); }
+.brand-mark i { border-radius: 2px; }
+.brand-mark i:nth-child(2) { background: #9dc6ff; }
+.brand-mark i:nth-child(3) { background: var(--violet); }
+.brand-number {
+  border-color: #596ba6;
+  background: #a795ff14;
+  border-radius: 6px;
+  color: var(--violet);
+}
+.section-nav {
+  background: #101629e8;
+  backdrop-filter: blur(18px) saturate(145%);
+}
+.section-nav > a {
+  padding-inline: 9px;
+  margin-right: 13px;
+  transition: color .15s, background .15s;
+}
+.section-nav > a.active { background: linear-gradient(0deg, #77ebff14, transparent 85%); }
+.hero { column-gap: 28px; }
+.hero-copy { align-self: center; }
+.hero-copy .eyebrow {
+  display: inline-block;
+  padding: 6px 11px;
+  border: 1px solid #77ebff40;
+  border-radius: 30px;
+  background: #77ebff09;
+  letter-spacing: .105em;
+}
+h1 { font-weight: 720; }
+h1 em {
+  background: var(--spectrum);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.primary-button {
+  border: 1px solid #acdcff;
+  border-radius: 9px;
+  background: var(--spectrum);
+  box-shadow: 0 6px 23px #78bdff22;
+}
+.primary-button:hover:not(:disabled) {
+  background: linear-gradient(115deg, #a6f8ff, #d5c5ff);
+  box-shadow: 0 8px 28px #78bdff3a;
+}
+.hero-art {
+  isolation: isolate;
+  min-width: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid #687cc968;
+  background:
+    radial-gradient(ellipse at 45% 34%, #365cba6e, transparent 64%),
+    radial-gradient(ellipse at 85% 88%, #7256b450, transparent 60%),
+    linear-gradient(140deg, #172541, #101529 60%, #171831);
+  box-shadow: inset 0 1px #c7d6ff18, 0 14px 40px #06091645;
+}
+.hero-art::before {
+  inset: 0;
+  opacity: .7;
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse, black 18%, transparent 85%);
+}
+.hero-art::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  border: 1px solid #a3b6ff20;
+  border-radius: 14px;
+  z-index: -1;
+}
+.orbit-label { top: 23px; left: 26px; }
+.cross-one { left: 23px; top: 47px; }
+.cross-two { right: 25px; bottom: 37px; }
+.signal-caption { bottom: 24px; }
+.hero-signal { bottom: 49px; left: 50%; transform: translateX(-50%); }
+.hero-signal span:nth-child(2n) { background: var(--violet); }
+.fiveg {
+  background: var(--spectrum);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  transform: translateY(-16px);
+}
+.fiveg span {
+  color: #9cafff12;
+  -webkit-text-stroke: 2px #a3b9ff;
+  filter: drop-shadow(0 0 14px #9ca8ff63);
+}
+.signal-node {
+  border: 1px solid #a4bdff7a;
+  background: linear-gradient(150deg, #3c5199cf, #17233cde);
+  color: #b5eaff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px #080c2280, inset 0 1px #d5e9ff28;
+}
+.node-two { color: var(--accent); bottom: 79px; }
+.section-number {
+  background: linear-gradient(155deg, #3b5b9169, #322e636e);
+  border-color: #7397d385;
+  border-radius: 12px;
+  color: #adceff;
+}
+.capability-tab {
+  border-radius: 10px;
+  background: #182139;
+}
+.capability-tab.selected {
+  border-color: #83dbffad;
+  background: linear-gradient(125deg, #2b4367, #262948);
+  box-shadow: inset 0 1px #a6eaff25;
+}
+.capability-panel {
+  border-radius: var(--radius);
+  background: var(--glass);
+}
+.example-chip {
+  display: inline-block;
+  border: 1px solid #c0afff45;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #c0afff0b;
+}
+.case-badge, .demo-label { border-radius: 20px; }
+.factory-figure {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: radial-gradient(ellipse at 52% 44%, #263d6855, transparent 64%), #0b1224;
+}
+.hotspot.selected { box-shadow: 0 0 18px #77ebff30; }
+.hotspot-info { background: var(--glass); }
+.lab {
+  border-radius: var(--radius);
+  box-shadow: 0 12px 34px #050a1840;
+}
+.lab-header { background: linear-gradient(100deg, #263b60, #252343); }
+.preview-state {
+  padding: 5px 7px;
+  border-radius: 5px;
+  background: #77ebff10;
+}
+.preview-state.alert { background: #ffbf9c14; }
+.route-control select { border-radius: 8px; }
+.result-panel {
+  background: linear-gradient(135deg, #203952, #182742);
+  border-radius: 12px;
+}
+.result-panel.alert { background: linear-gradient(135deg, #442f45, #30233d); }
+.pipeline li.active .stage-dot { box-shadow: 0 0 0 5px #77ebff18, 0 0 20px #77ebff42; }
+.quiz-card {
+  background: radial-gradient(ellipse at 95% 5%, #7461c02b, transparent 60%), #1c1e39;
+  border-radius: var(--radius);
+}
+.quiz-option { border-radius: 10px; }
+.quiz-option > span:first-child { border-radius: 6px; }
+footer {
+  background: linear-gradient(115deg, #c0b3fa, #acd4ff 54%, #a0edff);
+  border-radius: 0 0 23px 23px;
+}
+@media (max-width: 800px) {
+  .poster, footer { border-radius: 0; }
+  .hero { column-gap: 16px; }
+  .fiveg { font-size: clamp(132px, 28vw, 200px); }
+  .section-nav > a { margin-right: 8px; }
+}
+@media (max-width: 560px) {
+  .section-nav > a { margin: 0; padding-inline: 6px; }
+  .hero-art { min-height: 300px; }
+  .fiveg { font-size: clamp(130px, 55vw, 204px); }
+  .orbit-label { top: 24px; }
+  .node-one { top: 43px; }
+  .node-two { bottom: 64px; }
+  .hero-signal { bottom: 43px; }
+  .signal-caption { bottom: 20px; }
+}
+
+.hero-credits { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+.hero-credits strong { font: 600 14px/1.4 "Segoe UI", system-ui, sans-serif; letter-spacing: 0; }
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#rede">Pular para o conteúdo</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  <svg class="symbol-sheet" aria-hidden="true">
+    <defs>
+      <symbol id="icon-signal" viewBox="0 0 24 24"><path d="M3 8a13 13 0 0 1 18 0M6 12a8 8 0 0 1 12 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></symbol>
+      <symbol id="icon-chip" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 1v4m6-4v4M9 19v4m6-4v4M1 9h4m-4 6h4m14-6h4m-4 6h4"/><rect x="9" y="9" width="6" height="6"/></symbol>
+      <symbol id="icon-bolt" viewBox="0 0 24 24"><path d="m14 2-10 12h7l-1 8 10-12h-7z"/></symbol>
+      <symbol id="icon-nodes" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="3" cy="3" r="2"/><circle cx="21" cy="3" r="2"/><circle cx="3" cy="21" r="2"/><circle cx="21" cy="21" r="2"/><path d="m5 5 5 5m4 4 5 5m-5-9 5-5M5 19l5-5"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+      <symbol id="icon-wave" viewBox="0 0 24 24"><path d="M1 12h4l3-8 5 16 3-12 3 4h4"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="poster" id="topo">
+    <header class="masthead">
+      <a class="wordmark" href="#topo" aria-label="Frequência 05, início"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>FREQUÊNCIA<span class="brand-number">05</span></a>
+      <div class="edition">TECNOLOGIA EXPLICADA<br><span>5G + INTERNET DAS COISAS</span></div>
+    </header>
+    <nav class="section-nav" aria-label="Navegação do infográfico">
+      <a href="#rede" class="active"><span>01</span> A rede</a>
+      <a href="#fabrica"><span>02</span> A fábrica</a>
+      <a href="#simulador"><span>03</span> Laboratório</a>
+      <a href="#quiz"><span>04</span> Quiz</a>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar animações decorativas"><span aria-hidden="true">Ⅱ</span><span class="motion-label">Pausar animações</span></button>
+    </nav>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="status-dot"></span> PÔSTER DIGITAL INTERATIVO</div>
+          <h1 id="hero-title">Do sinal<br>à <em>ação.</em></h1>
+          <p>O 5G conecta o mundo físico ao digital. Explore a rede, entre em uma fábrica e faça os dados ganharem movimento.</p>
+          <a class="primary-button" href="#simulador">Experimentar o 5G <svg class="icon"><use href="#icon-arrow"/></svg></a>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+          <div class="cross cross-one">+</div><div class="cross cross-two">+</div>
+          <span class="orbit-label">CONEXÃO / QUINTA GERAÇÃO</span>
+          <div class="fiveg">5<span>G</span></div>
+          <span class="signal-node node-one"><svg class="icon"><use href="#icon-chip"/></svg></span>
+          <span class="signal-node node-two"><svg class="icon"><use href="#icon-signal"/></svg></span>
+          <div class="hero-signal"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <span class="signal-caption">OBJETOS → DADOS → DECISÕES</span>
+        </div>
+        <div class="hero-bottom"><div class="hero-credits"><span class="eyebrow">AUTORES</span><strong>Pedro, Vitor e Mauro</strong></div><span>UM GUIA PARA EXPLORAR ↓</span></div>
+      </section>
+
+      <section class="content-section" id="rede" aria-labelledby="network-title">
+        <div class="section-heading"><span class="section-number">01</span><div><p class="eyebrow">ENTENDA A CONEXÃO</p><h2 id="network-title">Uma rede.<br>Três possibilidades.</h2></div></div>
+        <p class="section-intro">O <strong>5G é a quinta geração das redes móveis</strong>. Dispositivos trocam dados por ondas de rádio com antenas, e a rede leva essas informações aos serviços conectados.</p>
+        <div class="tab-list" role="tablist" aria-label="Capacidades do 5G">
+          <button id="tab-data" class="capability-tab selected" type="button" role="tab" aria-selected="true" aria-controls="capability-panel" data-capability="data"><svg class="icon"><use href="#icon-signal"/></svg><span><b>Mais dados</b><small>eMBB</small></span><span class="tab-arrow">↗</span></button>
+          <button id="tab-response" class="capability-tab" type="button" role="tab" tabindex="-1" aria-selected="false" aria-controls="capability-panel" data-capability="response"><svg class="icon"><use href="#icon-bolt"/></svg><span><b>Resposta rápida</b><small>URLLC</small></span><span class="tab-arrow">↗</span></button>
+          <button id="tab-things" class="capability-tab" type="button" role="tab" tabindex="-1" aria-selected="false" aria-controls="capability-panel" data-capability="things"><svg class="icon"><use href="#icon-nodes"/></svg><span><b>Mais objetos</b><small>mMTC</small></span><span class="tab-arrow">↗</span></button>
+        </div>
+        <div class="capability-panel" id="capability-panel" role="tabpanel" tabindex="0" aria-labelledby="tab-data">
+          <div class="capability-art" id="capability-art" aria-hidden="true"></div>
+          <div class="capability-copy"><span class="eyebrow" id="capability-tag">BANDA LARGA MÓVEL APRIMORADA</span><h3 id="capability-title">Espaço para muito mais informação.</h3><p id="capability-description"></p><div class="example-chip" id="capability-example"></div></div>
+        </div>
+        <p class="fine-print">Toque nas três opções para explorar. O desempenho depende da cobertura, dos equipamentos e da configuração da rede.</p>
+      </section>
+
+      <section class="content-section factory-section" id="fabrica" aria-labelledby="factory-title">
+        <div class="section-heading"><span class="section-number">02</span><div><p class="eyebrow">DA TEORIA AO CHÃO DE FÁBRICA</p><h2 id="factory-title">Objetos conectados.<br>Decisões informadas.</h2></div></div>
+        <div class="case-strip"><span class="case-badge"><span class="status-dot"></span> CASO REAL</span><span>Worcester Bosch <span class="muted">/ Reino Unido</span></span></div>
+        <p class="section-intro">A Worcester Bosch adotou sensores para monitorar máquinas em um projeto com rede 5G privada e processamento local. Os dados ajudam a equipe a identificar problemas e planejar a manutenção. <a class="source-marker" href="#fontes" aria-label="Fontes 2 e 3">[2, 3]</a></p>
+        <figure class="factory-figure">
+          <figcaption><span class="eyebrow">MAPA DA CONEXÃO</span><span>Toque nos pontos para descobrir <b>+</b></span></figcaption>
+          <div class="factory-map">
+            <svg class="factory-drawing" viewBox="0 0 800 400" aria-hidden="true">
+              <defs>
+                <pattern id="floor-grid" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="matrix(1 .45 -1 .45 400 35)"><path d="M40 0H0V40" fill="none" stroke="#9ab8fe" stroke-opacity=".15"/></pattern>
+                <linearGradient id="machine-top" x2="1" y2="1"><stop stop-color="#567cae"/><stop offset="1" stop-color="#2a416e"/></linearGradient>
+              </defs>
+              <path d="M50 218 400 38 755 214 405 391Z" fill="#182647" stroke="#42608c"/>
+              <path d="M50 218 400 38 755 214 405 391Z" fill="url(#floor-grid)"/>
+              <path d="M50 218v12l355 173 350-177v-12" fill="none" stroke="#30446a"/>
+              <path class="data-route" d="m211 245 251-130 154 128-156 91" fill="none" stroke="#73e6ff" stroke-width="2" stroke-dasharray="5 7" opacity=".65"/>
+              <!-- Machine with attached sensor -->
+              <path d="m144 222 80-40 112 55-80 41Z" fill="url(#machine-top)" stroke="#7f9ac9"/>
+              <path d="m144 222 112 56v54l-112-55Z" fill="#2b4774" stroke="#5375a4"/>
+              <path d="m256 278 80-41v54l-80 41Z" fill="#1a2c50" stroke="#5375a4"/>
+              <path d="m166 240 68 33v27l-68-33Z" fill="#0b1428"/>
+              <path d="m176 249 47 23m-47-14 47 23" stroke="#a2c7fb"/>
+              <circle cx="291" cy="270" r="7" fill="#75e9ff"/>
+              <path d="m184 194 29-15 36 18-29 15Z" fill="#75e9ff"/>
+              <path d="m184 194 36 18v16l-36-18Z" fill="#3e7eac"/>
+              <path d="m220 212 29-15v16l-29 15Z" fill="#5aabd0"/>
+              <!-- Conveyor -->
+              <path d="m300 270 74-37 111 55-75 39Z" fill="#273d68" stroke="#597aab"/>
+              <path d="m300 270 110 57v13l-110-56Z" fill="#162443"/>
+              <path d="m325 259 110 56m-85-68 110 56m-85-68 110 56" stroke="#597aab"/>
+              <path d="m363 262 22-11 28 14-22 11Z" fill="#aa94e8"/><path d="m363 262 28 14v20l-28-14Z" fill="#72639e"/><path d="m391 276 22-11v20l-22 11Z" fill="#55507b"/>
+              <!-- Radio mast -->
+              <path d="m410 141 51-26 51 26-51 26Z" fill="#2c4674" stroke="#668dc4"/>
+              <path d="m444 140 17-89 17 89m-28-26h22m-18-26h14" fill="none" stroke="#c6d7f8" stroke-width="4"/>
+              <circle cx="461" cy="49" r="6" fill="#73e6ff"/>
+              <path class="radio-waves" d="M440 32a28 28 0 0 0 0 35m42-35a28 28 0 0 1 0 35M426 20a47 47 0 0 0 0 58m70-58a47 47 0 0 1 0 58" fill="none" stroke="#75e9ff" stroke-width="2"/>
+              <!-- Edge server -->
+              <path d="m564 179 45-23 52 26-45 23Z" fill="#8673b5" stroke="#cabdfa"/>
+              <path d="m564 179 52 26v86l-52-26Z" fill="#514477" stroke="#cabdfa"/>
+              <path d="m616 205 45-23v86l-45 23Z" fill="#2c2454" stroke="#cabdfa"/>
+              <path d="m574 199 30 15m-30 4 30 15m-30 4 30 15m-30 4 30 15" stroke="#c0b9df" stroke-width="3"/>
+              <circle cx="595" cy="215" r="2" fill="#73e6ff"/><circle cx="595" cy="234" r="2" fill="#73e6ff"/>
+              <!-- Operator panel -->
+              <path d="m435 318 41-20 34 16-41 20Z" fill="#5a75a7"/><path d="m469 334v19m-34-35v19m75-23v19" stroke="#9fb8de" stroke-width="3"/>
+              <path d="m441 282 40 20v28l-40-20Z" fill="#11203b" stroke="#a5baf2" stroke-width="2"/>
+              <path d="m448 294 8 4 5-4 5 15 9 1" fill="none" stroke="#73e6ff" stroke-width="2"/>
+              <text x="84" y="334" fill="#8aa7d4" font-family="monospace" font-size="11">IIoT / PLANTA ESQUEMÁTICA</text>
+            </svg>
+            <button class="hotspot hot-sensor selected" data-hotspot="sensor" type="button" aria-pressed="true" aria-controls="hotspot-info" aria-label="1. Explorar o sensor IoT"><b>1</b><span>Sensor</span></button>
+            <button class="hotspot hot-radio" data-hotspot="radio" type="button" aria-pressed="false" aria-controls="hotspot-info" aria-label="2. Explorar a rede 5G"><b>2</b><span>Rede 5G</span></button>
+            <button class="hotspot hot-edge" data-hotspot="edge" type="button" aria-pressed="false" aria-controls="hotspot-info" aria-label="3. Explorar o processamento local"><b>3</b><span>Edge</span></button>
+            <button class="hotspot hot-panel" data-hotspot="panel" type="button" aria-pressed="false" aria-controls="hotspot-info" aria-label="4. Explorar o painel de manutenção"><b>4</b><span>Painel</span></button>
+          </div>
+          <div class="hotspot-info" id="hotspot-info" role="status"><span id="hotspot-number">01</span><div><h3 id="hotspot-title">O objeto começa a contar sua história.</h3><p id="hotspot-description">Um sensor transforma vibração ou temperatura em dados. Essa ligação entre objetos físicos e sistemas digitais é a Internet das Coisas, ou IoT.</p></div></div>
+        </figure>
+        <p class="fine-print">Ilustração didática inspirada no caso. Na indústria, a Internet das Coisas também é chamada de IIoT.</p>
+      </section>
+
+      <section class="content-section lab-section" id="simulador" aria-labelledby="lab-title">
+        <div class="section-heading"><span class="section-number">03</span><div><p class="eyebrow">AGORA VOCÊ CONTROLA</p><h2 id="lab-title">E se o motor<br>começar a vibrar?</h2></div></div>
+        <p class="section-intro">Altere os sensores, escolha onde analisar os dados e envie uma leitura. Acompanhe o resultado chegando à equipe de manutenção.</p>
+        <div class="lab">
+          <div class="lab-header"><div><span class="status-dot"></span><strong>MOTOR M–01</strong><span class="lab-subtitle">Bancada virtual</span></div><span class="demo-label">SIMULAÇÃO DIDÁTICA</span></div>
+          <div class="lab-controls">
+            <fieldset id="sensor-controls">
+              <legend class="eyebrow">01 / AJUSTE OS SENSORES</legend>
+              <div class="sensor-control"><div class="control-heading"><label for="level">Vibração</label><output for="level" id="reading">3 <small>mm/s</small></output></div><input id="level" type="range" min="0" max="12" step="1" value="3" aria-describedby="vibration-hint"><div class="range-labels"><span>0</span><span id="vibration-hint">Alerta a partir de 7 mm/s</span><span>12</span></div></div>
+              <div class="sensor-control"><div class="control-heading"><label for="temperature">Temperatura</label><output for="temperature" id="temperature-reading">48 <small>°C</small></output></div><input id="temperature" type="range" min="20" max="100" step="1" value="48" aria-describedby="temperature-hint"><div class="range-labels"><span>20</span><span id="temperature-hint">Alerta a partir de 80 °C</span><span>100</span></div></div>
+              <div class="preset-actions"><button id="preset-alert" class="text-button" type="button">↗ Simular falha</button><button id="preset-normal" class="text-button" type="button">↙ Condição normal</button></div>
+            </fieldset>
+            <div class="sensor-monitor">
+              <div class="monitor-heading"><span class="eyebrow">SINAL DE VIBRAÇÃO</span><span id="preview-state" class="preview-state">Dentro do limite</span></div>
+              <svg id="wave-chart" viewBox="0 0 400 140" role="img" aria-label="Onda ilustrativa de vibração de 3 milímetros por segundo">
+                <path d="M0 23H400M0 70H400M0 117H400M50 0V140M150 0V140M250 0V140M350 0V140" fill="none" stroke="#2f476a" stroke-width="1"/>
+                <path id="waveform" d="" fill="none" stroke="#73e6ff" stroke-width="2.5"/>
+              </svg>
+              <p>Prévia do sensor <span class="muted">/ amplitude ilustrativa</span></p>
+              <div class="route-control"><label for="analysis-location" class="eyebrow">02 / ESCOLHA A ANÁLISE</label><select id="analysis-location"><option value="edge">Local, na fábrica (edge)</option><option value="cloud">Distante, na nuvem</option></select><p id="route-description">A análise acontece perto da máquina, reduzindo o percurso dos dados.</p></div>
+            </div>
+          </div>
+          <div class="lab-action"><button class="primary-button" id="send" type="button">Enviar leitura <svg class="icon"><use href="#icon-arrow"/></svg></button><button id="reset-simulation" class="text-button" type="button">Reiniciar</button><span id="sample-count">0 leituras enviadas</span></div>
+          <div class="transmission">
+            <div class="transmission-caption"><span class="eyebrow">03 / ACOMPANHE O PERCURSO</span><span>Reprodução em câmera lenta</span></div>
+            <ol class="pipeline" aria-label="Percurso da leitura">
+              <li data-stage="0"><span class="stage-dot">1</span><b>Sensor</b><small>Captura</small></li>
+              <li data-stage="1"><span class="stage-dot">2</span><b>Rede 5G</b><small>Transporte</small></li>
+              <li data-stage="2"><span class="stage-dot">3</span><b id="processing-stage">Edge</b><small>Análise</small></li>
+              <li data-stage="3"><span class="stage-dot">4</span><b>Painel</b><small>Decisão</small></li>
+            </ol>
+            <div class="result-panel" id="result-panel">
+              <div><span class="eyebrow" id="result-label">AGUARDANDO ENVIO</span><h3 id="result-title">Sua leitura começa aqui.</h3><p id="status" role="status">Ajuste os controles e envie os dados do motor.</p></div>
+              <div class="latency"><strong id="latency-value">—</strong><span>TEMPO TOTAL<br>MODELADO</span></div>
+            </div>
+            <details class="model-details"><summary>Como funciona esta simulação?</summary><p>O modelo usa um limite de vibração de 7 mm/s e um limite de temperatura de 80 °C. Uma leitura igual ou superior a qualquer limite gera um alerta. A análise local usa 20 ms de tempo total, e a distante usa 60 ms. São valores escolhidos para explicar o percurso dos dados, com etapas visuais desaceleradas.</p><p>As leituras são geradas pelos controles. Em uma instalação real, limites e tempos dependem da máquina, dos sensores, da rede, do servidor e da aplicação.</p></details>
+          </div>
+        </div>
+        <div class="takeaway"><svg class="icon"><use href="#icon-chip"/></svg><p><strong>Cada etapa tem uma função.</strong><br>A IoT produz os dados. A análise identifica o alerta. A equipe decide a ação.</p></div>
+      </section>
+
+      <section class="content-section quiz-section" id="quiz" aria-labelledby="quiz-title">
+        <div class="section-heading"><span class="section-number">04</span><div><p class="eyebrow">TESTE SUA CONEXÃO</p><h2 id="quiz-title">A ideia fez sentido?</h2></div></div>
+        <p class="section-intro">Três perguntas rápidas para conectar os pontos.</p>
+        <div class="quiz-card">
+          <div class="quiz-topline"><span class="eyebrow" id="question-count">PERGUNTA 01 / 03</span><div class="quiz-progress" aria-hidden="true"><i class="current"></i><i></i><i></i></div></div>
+          <h3 id="question-title" tabindex="-1"></h3>
+          <div id="quiz-options" class="quiz-options" role="group" aria-labelledby="question-title"></div>
+          <p id="quiz-feedback" class="quiz-feedback" role="status"></p>
+          <button id="quiz-next" class="primary-button" type="button" hidden>Próxima pergunta <span aria-hidden="true">→</span></button>
+          <button id="quiz-restart" class="primary-button" type="button" hidden>Tentar novamente <span aria-hidden="true">↻</span></button>
+        </div>
+      </section>
+    </main>
+
+    <footer id="fontes">
+      <div class="footer-top"><div><p class="eyebrow">PARA IR ALÉM</p><h2>Conhecimento<br>com origem.</h2></div><a href="#topo" class="back-top">Voltar ao início ↗</a></div>
+      <ol class="source-list">
+        <li><span>01</span><a href="https://www.itu.int/rec/R-REC-M.2083/en" target="_blank" rel="noopener noreferrer"><b>UIT • Visão IMT-2020</b><small>Os três cenários de uso do 5G.</small><span aria-hidden="true">↗</span></a></li>
+        <li><span>02</span><a href="https://www.bosch.co.uk/internet-of-things/leading-in-5g-technology/" target="_blank" rel="noopener noreferrer"><b>Bosch • Worcester Bosch</b><small>Sensores, manutenção e o projeto industrial.</small><span aria-hidden="true">↗</span></a></li>
+        <li><span>03</span><a href="https://www.ericsson.com/en/cases/2020/the-5g-factory-of-the-future" target="_blank" rel="noopener noreferrer"><b>Ericsson • A fábrica conectada</b><small>Rede privada e processamento local.</small><span aria-hidden="true">↗</span></a></li>
+      </ol>
+      <div class="footer-bottom"><span>FREQUÊNCIA 05 <span class="muted">/ 5G + IoT</span></span><span>PÔSTER DIGITAL INTERATIVO</span></div>
+    </footer>
+  </div>
+  <noscript><p class="noscript">Ative o JavaScript para usar os sensores, explorar as capacidades do 5G e responder ao quiz.</p></noscript>
+  <script>
+'use strict';
+
+const select = (selector) => document.querySelector(selector);
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionToggle = select('#motion-toggle');
+let decorativeMotionPaused = reducedMotion.matches;
+
+function updateMotion() {
+  document.body.classList.toggle('motion-paused', decorativeMotionPaused);
+  motionToggle.setAttribute('aria-pressed', String(decorativeMotionPaused));
+  motionToggle.setAttribute('aria-label', decorativeMotionPaused ? 'Retomar animações decorativas' : 'Pausar animações decorativas');
+  motionToggle.firstElementChild.textContent = decorativeMotionPaused ? '▷' : 'Ⅱ';
+  motionToggle.querySelector('.motion-label').textContent = decorativeMotionPaused ? 'Retomar animações' : 'Pausar animações';
+}
+motionToggle.addEventListener('click', () => {
+  decorativeMotionPaused = !decorativeMotionPaused;
+  updateMotion();
+});
+reducedMotion.addEventListener('change', () => {
+  decorativeMotionPaused = reducedMotion.matches;
+  updateMotion();
+});
+updateMotion();
+
+const diagramStart = '<svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg">';
+const diagramEnd = '</svg>';
+const capabilities = {
+  data: {
+    tag: 'Banda larga móvel aprimorada',
+    title: 'Espaço para muito mais informação.',
+    description: 'O eMBB amplia a capacidade de transportar dados. Aplicações com vídeo de alta resolução e experiências imersivas podem aproveitar essa banda para enviar mais conteúdo.',
+    example: 'EM USO / Vídeo em alta resolução',
+    art: diagramStart +
+      '<rect x="16" y="34" width="55" height="100" rx="7" fill="none" stroke="#849ac7"/><rect x="23" y="43" width="41" height="75" rx="2" fill="#253b63"/><path d="m37 66 16 11-16 11Z" fill="#77ebff"/><circle cx="44" cy="126" r="2" fill="#849ac7"/>' +
+      '<path d="M91 62H218M91 85H218M91 108H218" class="packet-lines" fill="none" stroke="#77ebff" stroke-width="5"/>' +
+      '<rect x="239" y="32" width="44" height="104" rx="3" fill="#28365f" stroke="#849ac7"/><path d="M248 50H274M248 68H274M248 86H274M248 104H274" stroke="#7895c8" stroke-width="3"/>' +
+      '<text x="100" y="145" fill="#acb9d7" font-size="9" font-family="monospace">MAIS FLUXO DE DADOS</text>' + diagramEnd
+  },
+  response: {
+    tag: 'Comunicação confiável de baixa latência',
+    title: 'Quando cada instante conta.',
+    description: 'A URLLC combina baixa latência, que é o atraso na comunicação, com alta confiabilidade. Ela atende aplicações que dependem de mensagens entregues em prazos rigorosos.',
+    example: 'EM USO / Automação industrial',
+    art: diagramStart +
+      '<circle cx="145" cy="82" r="61" fill="none" stroke="#3c5480"/><circle cx="145" cy="82" r="48" fill="#213354" stroke="#849ac7"/><path d="M145 43v8m39 31h-8m-31 39v-8m-39-31h8" stroke="#9ab2d7"/><path d="M145 82V57m0 25 24 12" fill="none" stroke="#77ebff" stroke-width="4" stroke-linecap="round"/><circle cx="145" cy="82" r="4" fill="#77ebff"/>' +
+      '<path class="packet-lines" d="M10 67H72M218 99h72" stroke="#c0afff" stroke-width="3"/><text x="70" y="162" fill="#acb9d7" font-size="9" font-family="monospace">MENOR ATRASO NA COMUNICAÇÃO</text>' + diagramEnd
+  },
+  things: {
+    tag: 'Comunicação massiva entre dispositivos',
+    title: 'Muitos objetos, uma rede.',
+    description: 'O mMTC contempla grandes quantidades de dispositivos conectados, como sensores que enviam pequenas leituras. A proposta é conectar muitos objetos com eficiência.',
+    example: 'EM USO / Monitoramento de sensores',
+    art: diagramStart +
+      '<path d="M150 84 40 30M150 84 40 84M150 84 40 138M150 84 95 18M150 84 95 150M150 84 260 30M150 84 260 84M150 84 260 138M150 84 205 18M150 84 205 150" stroke="#4b64a5" stroke-dasharray="3 4"/>' +
+      '<g fill="#213354" stroke="#9dc5ff"><circle cx="40" cy="30" r="9"/><circle cx="40" cy="84" r="9"/><circle cx="40" cy="138" r="9"/><circle cx="95" cy="18" r="7"/><circle cx="95" cy="150" r="7"/><circle cx="260" cy="30" r="9"/><circle cx="260" cy="84" r="9"/><circle cx="260" cy="138" r="9"/><circle cx="205" cy="18" r="7"/><circle cx="205" cy="150" r="7"/></g><circle cx="150" cy="84" r="28" fill="#77ebff"/><text x="150" y="91" text-anchor="middle" font-size="20" fill="#101735" font-family="monospace">5G</text>' + diagramEnd
+  }
+};
+const capabilityTabs = [...document.querySelectorAll('[data-capability]')];
+
+function showCapability(tab) {
+  const capability = capabilities[tab.dataset.capability];
+  capabilityTabs.forEach((item) => {
+    const selected = item === tab;
+    item.classList.toggle('selected', selected);
+    item.setAttribute('aria-selected', String(selected));
+    item.tabIndex = selected ? 0 : -1;
+  });
+  select('#capability-panel').setAttribute('aria-labelledby', tab.id);
+  select('#capability-tag').textContent = capability.tag;
+  select('#capability-title').textContent = capability.title;
+  select('#capability-description').textContent = capability.description;
+  select('#capability-example').textContent = capability.example;
+  select('#capability-art').innerHTML = capability.art;
+}
+capabilityTabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => showCapability(tab));
+  tab.addEventListener('keydown', (event) => {
+    const nextIndex = {
+      ArrowRight: (index + 1) % capabilityTabs.length,
+      ArrowLeft: (index + capabilityTabs.length - 1) % capabilityTabs.length,
+      Home: 0,
+      End: capabilityTabs.length - 1
+    }[event.key];
+    if (nextIndex === undefined) return;
+    event.preventDefault();
+    showCapability(capabilityTabs[nextIndex]);
+    capabilityTabs[nextIndex].focus();
+  });
+});
+showCapability(capabilityTabs[0]);
+
+const hotspotInformation = {
+  sensor: {
+    number: '01',
+    title: 'O objeto começa a contar sua história.',
+    description: 'Um sensor transforma vibração ou temperatura em dados. Essa ligação entre objetos físicos e sistemas digitais é a Internet das Coisas, ou IoT.'
+  },
+  radio: {
+    number: '02',
+    title: 'Os dados viajam pela rede.',
+    description: 'O dispositivo ou gateway envia a leitura por rádio à antena. A rede 5G privada da fábrica encaminha essa informação até o serviço de análise.'
+  },
+  edge: {
+    number: '03',
+    title: 'A análise acontece por perto.',
+    description: 'Um servidor local processa os dados próximo das máquinas. Esse processamento na borda, ou edge computing, pode reduzir o percurso até a análise.'
+  },
+  panel: {
+    number: '04',
+    title: 'A leitura vira uma decisão.',
+    description: 'O sistema apresenta informações e alertas à equipe. Com os dados em mãos, as pessoas podem investigar uma alteração e planejar a manutenção.'
+  }
+};
+const hotspots = [...document.querySelectorAll('[data-hotspot]')];
+hotspots.forEach((hotspot) => {
+  hotspot.addEventListener('click', () => {
+    const information = hotspotInformation[hotspot.dataset.hotspot];
+    hotspots.forEach((item) => {
+      item.classList.toggle('selected', item === hotspot);
+      item.setAttribute('aria-pressed', String(item === hotspot));
+    });
+    select('#hotspot-number').textContent = information.number;
+    select('#hotspot-title').textContent = information.title;
+    select('#hotspot-description').textContent = information.description;
+  });
+});
+
+const vibrationInput = select('#level');
+const temperatureInput = select('#temperature');
+const locationSelect = select('#analysis-location');
+const sendButton = select('#send');
+const stages = [...document.querySelectorAll('[data-stage]')];
+const simulationStatus = select('#status');
+const resultPanel = select('#result-panel');
+let simulationTimer;
+let simulationRunning = false;
+let completedSamples = 0;
+
+function clearResult() {
+  stages.forEach((stage) => stage.classList.remove('active', 'complete'));
+  resultPanel.classList.remove('alert');
+  select('#result-label').textContent = 'AGUARDANDO ENVIO';
+  select('#result-title').textContent = 'Sua leitura começa aqui.';
+  simulationStatus.textContent = 'Ajuste os controles e envie os dados do motor.';
+  select('#latency-value').textContent = '—';
+}
+function updateSensorPreview() {
+  const vibration = Number(vibrationInput.value);
+  const temperature = Number(temperatureInput.value);
+  select('#reading').innerHTML = vibration + ' <small>mm/s</small>';
+  select('#temperature-reading').innerHTML = temperature + ' <small>°C</small>';
+  [vibrationInput, temperatureInput].forEach((input) => {
+    const fraction = (Number(input.value) - Number(input.min)) / (Number(input.max) - Number(input.min));
+    input.style.setProperty('--fill', (fraction * 100) + '%');
+  });
+  const alert = vibration >= 7 || temperature >= 80;
+  const previewState = select('#preview-state');
+  previewState.textContent = alert ? 'Limite atingido' : 'Dentro do limite';
+  previewState.classList.toggle('alert', alert);
+  const points = [];
+  for (let x = 0; x <= 400; x += 2) {
+    const amplitude = vibration * 4.2;
+    const y = 70 + Math.sin(x / 13) * amplitude * (.65 + .35 * Math.sin(x / 39));
+    points.push((x === 0 ? 'M' : 'L') + x + ' ' + y.toFixed(1));
+  }
+  select('#waveform').setAttribute('d', points.join(' '));
+  select('#waveform').setAttribute('stroke', vibration >= 7 ? '#ffbf9c' : '#77ebff');
+  select('#wave-chart').setAttribute('aria-label', 'Onda ilustrativa de vibração de ' + vibration + ' milímetros por segundo');
+}
+function updateRoute() {
+  const local = locationSelect.value === 'edge';
+  select('#processing-stage').textContent = local ? 'Edge' : 'Nuvem';
+  select('#route-description').textContent = local
+    ? 'A análise acontece perto da máquina, reduzindo o percurso dos dados.'
+    : 'A leitura segue até um servidor remoto. O percurso até a análise é maior neste cenário.';
+}
+function updateSensorInputs() {
+  updateSensorPreview();
+  clearResult();
+}
+vibrationInput.addEventListener('input', updateSensorInputs);
+temperatureInput.addEventListener('input', updateSensorInputs);
+locationSelect.addEventListener('change', () => {
+  updateRoute();
+  clearResult();
+});
+select('#preset-alert').addEventListener('click', () => {
+  vibrationInput.value = '9';
+  temperatureInput.value = '84';
+  updateSensorInputs();
+});
+select('#preset-normal').addEventListener('click', () => {
+  vibrationInput.value = '3';
+  temperatureInput.value = '48';
+  updateSensorInputs();
+});
+
+function setSimulationRunning(running) {
+  simulationRunning = running;
+  select('#sensor-controls').disabled = running;
+  locationSelect.disabled = running;
+  sendButton.disabled = running;
+  sendButton.firstChild.textContent = running ? 'Enviando… ' : 'Enviar leitura ';
+}
+function finishReading(sample) {
+  stages.forEach((stage) => {
+    stage.classList.remove('active');
+    stage.classList.add('complete');
+  });
+  completedSamples += 1;
+  select('#sample-count').textContent = completedSamples + (completedSamples === 1 ? ' leitura enviada' : ' leituras enviadas');
+  const alerts = [];
+  if (sample.vibration >= 7) alerts.push('vibração de ' + sample.vibration + ' mm/s');
+  if (sample.temperature >= 80) alerts.push('temperatura de ' + sample.temperature + ' °C');
+  const hasAlert = alerts.length > 0;
+  resultPanel.classList.toggle('alert', hasAlert);
+  select('#result-label').textContent = 'LEITURA ' + String(completedSamples).padStart(2, '0') + ' • ' + (sample.local ? 'ANÁLISE LOCAL' : 'ANÁLISE NA NUVEM');
+  select('#result-title').textContent = hasAlert ? 'Atenção ao motor M–01.' : 'Motor dentro dos limites.';
+  simulationStatus.textContent = hasAlert
+    ? 'Alerta por ' + alerts.join(' e ') + '. O painel sinaliza à equipe a necessidade de inspecionar o motor.'
+    : 'Vibração de ' + sample.vibration + ' mm/s e temperatura de ' + sample.temperature + ' °C. O painel registra a leitura e o monitoramento continua.';
+  select('#latency-value').innerHTML = (sample.local ? '20' : '60') + '<small>ms</small>';
+  setSimulationRunning(false);
+}
+sendButton.addEventListener('click', () => {
+  if (simulationRunning) return;
+  const sample = {
+    vibration: Number(vibrationInput.value),
+    temperature: Number(temperatureInput.value),
+    local: locationSelect.value === 'edge'
+  };
+  clearResult();
+  setSimulationRunning(true);
+  const messages = [
+    'O sensor capturou ' + sample.vibration + ' mm/s e ' + sample.temperature + ' °C.',
+    'A rede 5G está encaminhando a leitura para o serviço de análise.',
+    sample.local ? 'O servidor local está comparando os valores com os limites do modelo.' : 'O servidor remoto está comparando os valores com os limites do modelo.',
+    'O painel recebe o resultado para a equipe de manutenção.'
+  ];
+  let currentStage = 0;
+  function advance() {
+    stages.forEach((stage, index) => {
+      stage.classList.toggle('active', index === currentStage);
+      stage.classList.toggle('complete', index < currentStage);
+    });
+    select('#result-label').textContent = 'TRANSMITINDO • ETAPA ' + (currentStage + 1) + ' DE 4';
+    select('#result-title').textContent = ['Leitura capturada.', 'Dados a caminho.', 'Analisando os dados.', 'Resultado entregue.'][currentStage];
+    simulationStatus.textContent = messages[currentStage];
+    currentStage += 1;
+    simulationTimer = window.setTimeout(() => {
+      if (currentStage < stages.length) advance();
+      else finishReading(sample);
+    }, 650);
+  }
+  advance();
+});
+select('#reset-simulation').addEventListener('click', () => {
+  window.clearTimeout(simulationTimer);
+  setSimulationRunning(false);
+  completedSamples = 0;
+  vibrationInput.value = '3';
+  temperatureInput.value = '48';
+  locationSelect.value = 'edge';
+  select('#sample-count').textContent = '0 leituras enviadas';
+  updateRoute();
+  updateSensorPreview();
+  clearResult();
+  simulationStatus.textContent = 'Simulação reiniciada. Ajuste os controles e envie uma nova leitura.';
+});
+updateSensorPreview();
+updateRoute();
+
+const questions = [
+  {
+    title: 'Qual é o papel do sensor em uma aplicação de IoT?',
+    options: ['Gerar o sinal de rádio da rede 5G.', 'Transformar uma condição física em dados.', 'Decidir sozinho quando trocar uma máquina.'],
+    correct: 1,
+    explanation: 'O sensor mede condições do mundo físico, como vibração e temperatura. A rede transporta os dados para o sistema que vai analisá-los.'
+  },
+  {
+    title: 'Por que usar processamento local, ou edge, na fábrica?',
+    options: ['Para reduzir o percurso dos dados até a análise.', 'Para eliminar a necessidade de sensores.', 'Para garantir que todo motor dure para sempre.'],
+    correct: 0,
+    explanation: 'O servidor próximo da máquina pode reduzir o percurso dos dados. O tempo final também depende da rede, do processamento e da aplicação.'
+  },
+  {
+    title: 'Na simulação, a vibração chegou a 7 mm/s. O que acontece?',
+    options: ['O motor é reparado automaticamente pelo 5G.', 'A leitura é ignorada até chegar a 12 mm/s.', 'O sistema gera um alerta para a equipe.'],
+    correct: 2,
+    explanation: 'No nosso modelo, uma vibração igual ou superior a 7 mm/s gera um alerta. A rede entrega os dados, o sistema os analisa e a equipe decide a ação.'
+  }
+];
+let questionIndex = 0;
+let correctAnswers = 0;
+let questionAnswered = false;
+const quizOptions = select('#quiz-options');
+const quizNext = select('#quiz-next');
+const quizRestart = select('#quiz-restart');
+const quizFeedback = select('#quiz-feedback');
+
+function answerQuestion(answerIndex) {
+  if (questionAnswered) return;
+  questionAnswered = true;
+  const question = questions[questionIndex];
+  const correct = answerIndex === question.correct;
+  if (correct) correctAnswers += 1;
+  [...quizOptions.children].forEach((button, index) => {
+    button.disabled = true;
+    if (index === question.correct) {
+      button.classList.add('correct');
+      const indicator = document.createElement('span');
+      indicator.className = 'answer-indicator';
+      indicator.textContent = '✓ CORRETA';
+      button.append(indicator);
+    } else if (index === answerIndex) {
+      button.classList.add('wrong');
+      const indicator = document.createElement('span');
+      indicator.className = 'answer-indicator';
+      indicator.textContent = 'SUA RESPOSTA';
+      button.append(indicator);
+    }
+  });
+  quizFeedback.textContent = (correct ? 'Isso mesmo. ' : 'Vamos conectar essa ideia. ') + question.explanation;
+  quizNext.textContent = questionIndex === questions.length - 1 ? 'Ver meu resultado →' : 'Próxima pergunta →';
+  quizNext.hidden = false;
+}
+function renderQuestion(focus = false) {
+  const question = questions[questionIndex];
+  questionAnswered = false;
+  select('#question-count').textContent = 'PERGUNTA ' + String(questionIndex + 1).padStart(2, '0') + ' / 03';
+  select('#question-title').textContent = question.title;
+  quizOptions.replaceChildren();
+  question.options.forEach((answer, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'quiz-option';
+    const letter = document.createElement('span');
+    letter.textContent = String.fromCharCode(65 + index);
+    letter.setAttribute('aria-hidden', 'true');
+    const text = document.createElement('span');
+    text.textContent = answer;
+    button.append(letter, text);
+    button.addEventListener('click', () => answerQuestion(index));
+    quizOptions.append(button);
+  });
+  [...document.querySelectorAll('.quiz-progress i')].forEach((step, index) => step.classList.toggle('current', index <= questionIndex));
+  quizFeedback.textContent = '';
+  quizNext.hidden = true;
+  quizRestart.hidden = true;
+  if (focus) select('#question-title').focus({preventScroll: true});
+}
+quizNext.addEventListener('click', () => {
+  if (!questionAnswered) return;
+  questionIndex += 1;
+  if (questionIndex < questions.length) {
+    renderQuestion(true);
+    return;
+  }
+  select('#question-count').textContent = 'CONEXÃO CONCLUÍDA';
+  select('#question-title').textContent = correctAnswers === 3 ? 'Você conectou todos os pontos.' : 'Cada resposta ajuda a entender.';
+  quizOptions.replaceChildren();
+  const score = document.createElement('p');
+  score.className = 'quiz-score';
+  score.innerHTML = correctAnswers + '<span> / 3 acertos</span>';
+  quizOptions.append(score);
+  quizFeedback.textContent = 'Sensores medem. A rede transporta. O sistema analisa. A equipe age. Explore o laboratório novamente ou refaça o quiz.';
+  quizNext.hidden = true;
+  quizRestart.hidden = false;
+  select('#question-title').focus({preventScroll: true});
+});
+quizRestart.addEventListener('click', () => {
+  questionIndex = 0;
+  correctAnswers = 0;
+  renderQuestion(true);
+});
+renderQuestion();
+
+const readingProgress = select('#reading-progress');
+const navigationLinks = [...document.querySelectorAll('.section-nav > a')];
+const navigationSections = navigationLinks.map((link) => select(link.getAttribute('href')));
+let scrollUpdatePending = false;
+function updateReadingPosition() {
+  const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+  readingProgress.style.transform = 'scaleX(' + Math.min(1, Math.max(0, progress)) + ')';
+  let activeIndex = 0;
+  navigationSections.forEach((section, index) => {
+    if (section.getBoundingClientRect().top <= 150) activeIndex = index;
+  });
+  navigationLinks.forEach((link, index) => {
+    link.classList.toggle('active', index === activeIndex);
+    if (index === activeIndex) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+  scrollUpdatePending = false;
+}
+window.addEventListener('scroll', () => {
+  if (scrollUpdatePending) return;
+  scrollUpdatePending = true;
+  window.requestAnimationFrame(updateReadingPosition);
+}, {passive: true});
+window.addEventListener('resize', updateReadingPosition);
+updateReadingPosition();
+</script>
+</body>
+</html>
